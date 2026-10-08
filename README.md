@@ -46,6 +46,16 @@ and remove image movement. Timeline buttons update a chapter preview using
 `history.chapterPhotos`, in the same order as `history.timeline`. These images
 are present-day context photographs, not historical reconstructions.
 
+## Image performance
+
+`content.js` contains an `assets` catalog with responsive WebP paths and image
+dimensions. Keep editing the existing `image` fields as before; the renderer
+automatically selects optimized files when a catalog entry exists. New uncataloged
+paths continue to work. The original JPEGs remain available. Slideshow scenes are
+loaded on demand, and the desktop-only photo card does not load on mobile. The
+first hero image is preloaded directly from the content configuration. Above-fold
+headings appear immediately, and the header reserves its space before rendering.
+
 ## Content accuracy
 
 References are linked in the website. Lamanai’s High Temple is not labeled El

@@ -8,8 +8,9 @@
   <meta name="theme-color" content="#193c32">
   <title></title>
   <link rel="stylesheet" href="style.css">
-  <!-- Ordered deferred scripts also work when index.html is opened directly. -->
-  <script src="content.js" defer></script>
+  <!-- Tiny content config discovers/preloads the hero before the body renders.
+       The renderer remains deferred; asset paths stay exclusively in content.js. -->
+  <script src="content.js"></script>
   <script src="script.js" defer></script>
 </head>
 <body>

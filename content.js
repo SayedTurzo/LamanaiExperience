@@ -7,6 +7,20 @@
  * Source images supplied in the chat are preserved as optimized local assets.
  */
 window.siteContent = {
+  // Image delivery metadata. Existing image fields below remain easy to edit.
+  // Unknown/new paths still work; add an entry here for responsive optimization.
+  assets: {
+    "images/high-temple.jpg": { width: 1200, height: 1600, src: "images/high-temple-1200.webp", srcset: "images/high-temple-320.webp 320w, images/high-temple-480.webp 480w, images/high-temple-800.webp 800w, images/high-temple-960.webp 960w, images/high-temple-1200.webp 1200w" },
+    "images/ball-court.jpg": { width: 1200, height: 1600, src: "images/ball-court-1200.webp", srcset: "images/ball-court-320.webp 320w, images/ball-court-480.webp 480w, images/ball-court-800.webp 800w, images/ball-court-960.webp 960w, images/ball-court-1200.webp 1200w" },
+    "images/temple-plaza.jpg": { width: 1200, height: 1600, src: "images/temple-plaza-1200.webp", srcset: "images/temple-plaza-320.webp 320w, images/temple-plaza-480.webp 480w, images/temple-plaza-800.webp 800w, images/temple-plaza-960.webp 960w, images/temple-plaza-1200.webp 1200w" },
+    "images/class-at-temple.jpg": { width: 1200, height: 1600, src: "images/class-at-temple-1200.webp", srcset: "images/class-at-temple-320.webp 320w, images/class-at-temple-480.webp 480w, images/class-at-temple-800.webp 800w, images/class-at-temple-960.webp 960w, images/class-at-temple-1200.webp 1200w" },
+    "images/group-photo.jpg": { width: 1200, height: 1600, src: "images/group-photo-1200.webp", srcset: "images/group-photo-320.webp 320w, images/group-photo-480.webp 480w, images/group-photo-800.webp 800w, images/group-photo-960.webp 960w, images/group-photo-1200.webp 1200w" },
+    "images/entrance.jpg": { width: 1200, height: 1600, src: "images/entrance-1200.webp", srcset: "images/entrance-320.webp 320w, images/entrance-480.webp 480w, images/entrance-800.webp 800w, images/entrance-960.webp 960w, images/entrance-1200.webp 1200w" },
+    "images/maya-house.jpg": { width: 1200, height: 1600, src: "images/maya-house-1200.webp", srcset: "images/maya-house-320.webp 320w, images/maya-house-480.webp 480w, images/maya-house-800.webp 800w, images/maya-house-960.webp 960w, images/maya-house-1200.webp 1200w" },
+    "images/stone-detail.jpg": { width: 1200, height: 1600, src: "images/stone-detail-1200.webp", srcset: "images/stone-detail-320.webp 320w, images/stone-detail-480.webp 480w, images/stone-detail-800.webp 800w, images/stone-detail-960.webp 960w, images/stone-detail-1200.webp 1200w" },
+    "images/guided-tour.jpg": { width: 900, height: 1600, src: "images/guided-tour-900.webp", srcset: "images/guided-tour-320.webp 320w, images/guided-tour-480.webp 480w, images/guided-tour-800.webp 800w, images/guided-tour-900.webp 900w" },
+    "images/site-map.jpg": { width: 480, height: 640, src: "images/site-map-480.webp", srcset: "images/site-map-480.webp 480w" }
+  },
   meta: {
     title: "My Lamanai Experience | Belizean History Trip",
     description: "A student field journal from Lamanai, Belize: Maya history, a site map, three tour highlights, and photographs from our class visit."
@@ -135,3 +149,19 @@ window.siteContent = {
   },
   footer: { title: "My Lamanai Experience", course: "Belizean History Trip", year: "2026", copyright: "Student project. All rights reserved.", closing: "Made with curiosity. Remembered together." }
 };
+
+// Discover the first hero image as soon as the content configuration arrives,
+// without duplicating its editable path in index.html. Metadata is ready early too.
+if (typeof document !== "undefined") {
+  const content = window.siteContent;
+  document.title = content.meta.title;
+  document.querySelector('meta[name="description"]').content = content.meta.description;
+  const heroAsset = content.assets[content.hero.image];
+  const preload = document.createElement("link");
+  preload.rel = "preload";
+  preload.as = "image";
+  preload.href = heroAsset?.src || content.hero.image;
+  if (heroAsset?.srcset) { preload.imageSrcset = heroAsset.srcset; preload.imageSizes = "100vw"; }
+  preload.fetchPriority = "high";
+  document.head.append(preload);
+}

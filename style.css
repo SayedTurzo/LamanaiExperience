@@ -249,3 +249,15 @@ body { background-image:radial-gradient(#193c3208 .6px,transparent .6px); backgr
   .hero-note,.hero-inner>h1,.hero-subtitle,.hero-body,.hero-actions { animation:none; }
   .highlight-card:after,.map-card:after { display:none; }
 }
+
+/* Reserve the empty dynamic shell; adding navigation must not push the hero. */
+.site-header { min-height:88px; }
+.hero>.hero-scene { contain:layout paint; }
+.hero.motion-suspended .hero-scene,.hero.motion-suspended .hero-note { animation-play-state:paused; }
+/* Above-fold copy is immediately visible. Transform-only motion does not wait
+   for an opacity animation before the headline can become an LCP candidate. */
+.hero-inner>h1,.hero-subtitle,.hero-body,.hero-actions { animation:none; }
+.highlight-card:first-child .highlight-image { min-width:0; }
+.highlight-card:first-child .highlight-image img { flex:none; height:500px; }
+@media(max-width:900px) { .site-header{min-height:76px;} .highlight-card:first-child .highlight-image img{height:360px;} }
+@media(max-width:600px) { .highlight-card:first-child .highlight-image img{height:300px;} }

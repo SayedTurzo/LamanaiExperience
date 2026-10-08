@@ -20,11 +20,23 @@
     const safeHref = /^(#|https:\/\/|images\/)/.test(href) ? href : "#";
     return el("a", className, label, { href: safeHref });
   }
-  function image(item, eager = false) {
+  function setImageSource(img, item, sizes = "(max-width: 600px) calc(100vw - 40px), (max-width: 900px) 50vw, 600px") {
+    const asset = data.assets[item.image];
+    if (asset) {
+      img.width = asset.width; img.height = asset.height;
+      img.sizes = sizes; img.srcset = asset.srcset;
+    } else {
+      img.removeAttribute("srcset"); img.removeAttribute("sizes");
+      img.removeAttribute("width"); img.removeAttribute("height");
+    }
+    img.src = asset?.src || item.image;
+  }
+  function image(item, eager = false, sizes, loadNow = true) {
     const img = el("img", "", undefined, {
-      src: item.image, alt: item.alt || item.imageAlt, loading: eager ? "eager" : "lazy", decoding: "async"
+      alt: item.alt || item.imageAlt, loading: eager ? "eager" : "lazy", decoding: "async"
     });
     if (eager) img.setAttribute("fetchpriority", "high");
+    if (loadNow) setImageSource(img, item, sizes);
     img.addEventListener("error", () => {
       img.classList.add("image-error");
       img.alt = `${data.ui.imageUnavailable}: ${img.alt}`;
@@ -57,7 +69,9 @@
   // Hero image is a real image for accessibility and loading priority.
   const heroScenes = [data.hero, ...data.hero.scenes];
   const sceneImages = heroScenes.map((scene, index) => {
-    const img = image(scene, index === 0);
+    // Inactive scenes get no URL yet: opacity/lazy loading alone still fetches
+    // viewport-sized hidden images and competes with the initial hero request.
+    const img = image(scene, index === 0, "100vw", index === 0);
     img.classList.add("hero-scene");
     img.classList.toggle("scene-active", index === 0);
     img.setAttribute("aria-hidden", String(index !== 0));
@@ -76,7 +90,11 @@
   heroInner.append(heroActions);
   const fieldNote = data.hero.fieldNote;
   const noteCard = el("aside", "hero-note");
-  noteCard.append(el("p", "eyebrow", fieldNote.eyebrow), el("h2", "", fieldNote.title), image(fieldNote), el("p", "note-caption", fieldNote.caption));
+  const noteImage = image(fieldNote, false, "(max-width: 1100px) 199px, 231px", false);
+  const noteMedia = window.matchMedia("(min-width: 901px)");
+  function loadNoteImage() { if (noteMedia.matches && !noteImage.hasAttribute("src")) setImageSource(noteImage, fieldNote, "(max-width: 1100px) 199px, 231px"); }
+  loadNoteImage(); noteMedia.addEventListener("change", loadNoteImage);
+  noteCard.append(el("p", "eyebrow", fieldNote.eyebrow), el("h2", "", fieldNote.title), noteImage, el("p", "note-caption", fieldNote.caption));
   heroInner.append(noteCard);
   const heroBottom = el("div", "hero-bottom container");
   const sceneCaption = el("span", "hero-caption", data.hero.imageCaption);
@@ -100,6 +118,7 @@
   let sceneTimer = 0;
   let sceneRequest = 0;
   let scenePlaying = !motionPreference.matches;
+  let heroReady = false;
   let heroVisible = true;
   let heroHovered = false;
   function updateScenePause() {
@@ -109,6 +128,10 @@
   }
   async function changeScene(index) {
     const request = ++sceneRequest;
+    if (!sceneImages[index].hasAttribute("src")) {
+      sceneImages[index].loading = "eager";
+      setImageSource(sceneImages[index], heroScenes[index], "100vw");
+    }
     try { await sceneImages[index].decode(); } catch { return; }
     if (request !== sceneRequest) return;
     activeScene = index;
@@ -118,7 +141,8 @@
   }
   function scheduleScene() {
     window.clearTimeout(sceneTimer);
-    if (!scenePlaying || !heroVisible || heroHovered || document.hidden || $("home").contains(document.activeElement) || $("photo-dialog").open) return;
+    $("home").classList.toggle("motion-suspended", !heroVisible || document.hidden || $("photo-dialog").open);
+    if (!heroReady || !scenePlaying || !heroVisible || heroHovered || document.hidden || $("home").contains(document.activeElement) || $("photo-dialog").open) return;
     sceneTimer = window.setTimeout(async () => { await changeScene((activeScene + 1) % heroScenes.length); scheduleScene(); }, data.ui.sceneDuration);
   }
   scenePause.addEventListener("click", () => { scenePlaying = !scenePlaying; updateScenePause(); scheduleScene(); });
@@ -129,7 +153,9 @@
   document.addEventListener("visibilitychange", scheduleScene);
   motionPreference.addEventListener("change", () => { if (motionPreference.matches) scenePlaying = false; updateScenePause(); scheduleScene(); });
   if ("IntersectionObserver" in window) new IntersectionObserver(([entry]) => { heroVisible = entry.isIntersecting; scheduleScene(); }).observe($("home"));
-  updateScenePause(); scheduleScene();
+  updateScenePause();
+  // Wait for the initial photograph before starting the scene timer.
+  sceneImages[0].decode().catch(() => {}).then(() => { heroReady = true; scheduleScene(); });
   const stats = el("div", "stats container");
   data.intro.forEach((item) => {
     const stat = el("div", "stat");
@@ -159,7 +185,7 @@
     chapterDate.textContent = item.date;
     chapterTitle.textContent = item.title;
     chapterText.textContent = item.text;
-    chapterImage.src = photo.image; chapterImage.alt = photo.alt;
+    setImageSource(chapterImage, photo); chapterImage.alt = photo.alt;
     chapterButtons.forEach((button, i) => button.setAttribute("aria-pressed", String(i === index)));
     if (!motionPreference.matches && chapterCopy.animate) chapterCopy.animate([{ opacity: 0, transform: "translateY(8px)" }, { opacity: 1, transform: "translateY(0)" }], { duration: 300 });
   }
@@ -228,7 +254,8 @@
   data.gallery.items.forEach((item) => {
     const figure = el("figure", `gallery-item ${item.shape === "wide" ? "gallery-wide" : ""}`);
     const button = el("button", "gallery-photo photo-trigger", undefined, { type: "button", "aria-label": `${data.ui.viewPhoto}: ${item.title}` });
-    button.append(image(item), el("span", "photo-expand", data.ui.expandSymbol, { "aria-hidden": "true" }));
+    const gallerySizes = item.shape === "wide" ? "(max-width: 900px) calc(100vw - 40px), 600px" : "(max-width: 600px) calc((100vw - 56px) / 2), (max-width: 900px) calc((100vw - 70px) / 2), 300px";
+    button.append(image(item, false, gallerySizes), el("span", "photo-expand", data.ui.expandSymbol, { "aria-hidden": "true" }));
     button.addEventListener("click", () => openPhoto(item, item.caption, visiblePhotos));
     const caption = el("figcaption");
     caption.append(el("h3", "", item.title), el("p", "", item.caption));
@@ -333,7 +360,7 @@
   $("photo-close").textContent = data.ui.closeSymbol;
   $("photo-close").setAttribute("aria-label", data.ui.closePhoto);
   function displayPhoto(item, caption) {
-    $("photo-image").src = item.image;
+    setImageSource($("photo-image"), item, "90vw");
     $("photo-image").alt = item.alt;
     $("photo-caption").textContent = caption;
     photoCounter.textContent = data.ui.photoCounter.replace("{current}", String(photoIndex + 1)).replace("{total}", String(photoSequence.length));
