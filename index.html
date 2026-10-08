@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Metadata and all visible copy are populated from content.js. -->
+  <meta name="description" content="">
+  <meta name="theme-color" content="#193c32">
+  <title></title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Ordered deferred scripts also work when index.html is opened directly. -->
+  <script src="content.js" defer></script>
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a id="skip-link" class="skip-link" href="#main"></a>
+  <header id="header" class="site-header"></header>
+  <main id="main" tabindex="-1">
+    <section id="home" class="hero" aria-labelledby="hero-title"></section>
+    <div id="intro" class="intro-strip"></div>
+    <section id="history" class="section history-section" aria-labelledby="history-title"></section>
+    <section id="highlights" class="section highlights-section" aria-labelledby="highlights-title"></section>
+    <section id="gallery" class="section gallery-section" aria-labelledby="gallery-title"></section>
+    <section id="group" class="group-section" aria-labelledby="group-title"></section>
+    <section id="sources" class="section sources-section" aria-labelledby="sources-title"></section>
+  </main>
+  <footer id="footer" class="site-footer"></footer>
+  <!-- Native dialog supplies focus containment and Escape-key support. -->
+  <dialog id="photo-dialog" class="photo-dialog" aria-labelledby="photo-caption">
+    <button id="photo-close" class="photo-close" type="button"></button>
+    <img id="photo-image" src="" alt="">
+    <p id="photo-caption"></p>
+  </dialog>
+</body>
+</html>

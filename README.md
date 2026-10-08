@@ -1,0 +1,41 @@
+# My Lamanai Experience
+
+A dependency-free student field journal, ready for static hosting on Vercel.
+
+## Edit the content
+
+Open `content.js`. All visible text, accessibility labels, page metadata, captions,
+image paths, student names, and the trip date are there. Keep quotes and commas in
+place. Change `group.date` (YYYY-MM-DD) and `group.dateLabel` together. Replace the
+sample names and draft reflection before submission. Keep exactly three highlights.
+The supplied class-at-temple image serves as the group photograph; replace
+`images/group-photo.jpg` with a formal group portrait if available.
+
+## Preview
+
+Open `index.html`, or serve this directory with `python -m http.server 4173` and
+visit http://localhost:4173. There is no install or build step.
+
+## Deploy on Vercel
+
+Import this repository. Select **Other** as the framework preset, leave the build
+command empty, and use `.` as the output directory. The root `index.html` is the
+entry point. No backend or environment variables are required.
+
+## Structure
+
+- `index.html`: semantic section containers, ordered deferred scripts, image dialog.
+- `style.css`: responsive design, visible focus states, reduced-motion support.
+- `content.js`: teammate-editable content and reference links.
+- `script.js`: safe DOM rendering, responsive menu, active navigation, lightbox.
+- `images/`: optimized local photographs; no third-party image requests.
+
+## Content accuracy
+
+References are linked in the website. Lamanai’s High Temple is not labeled El
+Castillo (the name commonly associated with Xunantunich). The history explains
+Lamanai’s persistence after regional decline. Ballgame rules are described as
+variable, and universal winner/loser sacrifice claims are avoided. The third
+highlight’s photo is explicitly identified as general temple/plaza architecture,
+not a confirmed photograph of the Royal Complex. The map is the supplied sign
+photograph, with an enlargement and links to archaeological research maps.
