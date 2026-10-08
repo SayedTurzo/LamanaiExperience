@@ -3,6 +3,7 @@
   "use strict";
   const data = window.siteContent;
   if (!data) return;
+  const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
   const $ = (id) => document.getElementById(id);
   const sourceById = new Map(data.sources.items.map((source) => [source.id, source]));
 
@@ -54,7 +55,16 @@
   $("header").append(headerInner);
 
   // Hero image is a real image for accessibility and loading priority.
-  $("home").append(image(data.hero, true), el("div", "hero-shade"));
+  const heroScenes = [data.hero, ...data.hero.scenes];
+  const sceneImages = heroScenes.map((scene, index) => {
+    const img = image(scene, index === 0);
+    img.classList.add("hero-scene");
+    img.classList.toggle("scene-active", index === 0);
+    img.setAttribute("aria-hidden", String(index !== 0));
+    $("home").append(img);
+    return img;
+  });
+  $("home").append(el("div", "hero-shade"));
   const heroInner = el("div", "hero-inner container");
   heroInner.append(el("p", "eyebrow", data.hero.eyebrow), el("h1", "", data.hero.title, { id: "hero-title" }), el("p", "hero-subtitle", data.hero.subtitle), el("p", "hero-body", data.hero.body));
   const cta = link(data.hero.action, data.hero.actionHref, "button button-gold");
@@ -69,8 +79,57 @@
   noteCard.append(el("p", "eyebrow", fieldNote.eyebrow), el("h2", "", fieldNote.title), image(fieldNote), el("p", "note-caption", fieldNote.caption));
   heroInner.append(noteCard);
   const heroBottom = el("div", "hero-bottom container");
-  heroBottom.append(el("span", "hero-location", data.hero.location), el("span", "hero-caption", data.hero.imageCaption));
+  const sceneCaption = el("span", "hero-caption", data.hero.imageCaption);
+  const sceneControls = el("div", "scene-controls", undefined, { role: "group", "aria-label": data.ui.heroScenes });
+  const sceneButtons = heroScenes.map((scene, index) => {
+    const button = el("button", "scene-dot", String(index + 1).padStart(2, "0"), {
+      type: "button", "aria-label": data.ui.sceneLabel.replace("{number}", String(index + 1)).replace("{caption}", scene.imageCaption), "aria-pressed": String(index === 0)
+    });
+    button.addEventListener("click", () => { changeScene(index); scheduleScene(); });
+    sceneControls.append(button);
+    return button;
+  });
+  const scenePause = el("button", "scene-pause", undefined, { type: "button" });
+  sceneControls.append(scenePause);
+  heroBottom.append(el("span", "hero-location", data.hero.location), sceneControls, sceneCaption);
   $("home").append(heroInner, heroBottom);
+
+  // Autoplay only while the hero is visible and idle. Pause, keyboard focus,
+  // reduced motion and a background browser tab all stop automatic changes.
+  let activeScene = 0;
+  let sceneTimer = 0;
+  let sceneRequest = 0;
+  let scenePlaying = !motionPreference.matches;
+  let heroVisible = true;
+  let heroHovered = false;
+  function updateScenePause() {
+    $("home").classList.toggle("motion-paused", !scenePlaying);
+    scenePause.textContent = scenePlaying ? data.ui.pauseSymbol : data.ui.playSymbol;
+    scenePause.setAttribute("aria-label", scenePlaying ? data.ui.pauseSlideshow : data.ui.playSlideshow);
+  }
+  async function changeScene(index) {
+    const request = ++sceneRequest;
+    try { await sceneImages[index].decode(); } catch { return; }
+    if (request !== sceneRequest) return;
+    activeScene = index;
+    sceneImages.forEach((img, i) => { img.classList.toggle("scene-active", i === index); img.setAttribute("aria-hidden", String(i !== index)); });
+    sceneButtons.forEach((button, i) => button.setAttribute("aria-pressed", String(i === index)));
+    sceneCaption.textContent = heroScenes[index].imageCaption;
+  }
+  function scheduleScene() {
+    window.clearTimeout(sceneTimer);
+    if (!scenePlaying || !heroVisible || heroHovered || document.hidden || $("home").contains(document.activeElement) || $("photo-dialog").open) return;
+    sceneTimer = window.setTimeout(async () => { await changeScene((activeScene + 1) % heroScenes.length); scheduleScene(); }, data.ui.sceneDuration);
+  }
+  scenePause.addEventListener("click", () => { scenePlaying = !scenePlaying; updateScenePause(); scheduleScene(); });
+  $("home").addEventListener("pointerenter", (event) => { if (event.pointerType === "mouse") { heroHovered = true; scheduleScene(); } });
+  $("home").addEventListener("pointerleave", () => { heroHovered = false; scheduleScene(); });
+  $("home").addEventListener("focusin", scheduleScene);
+  $("home").addEventListener("focusout", () => window.setTimeout(scheduleScene, 0));
+  document.addEventListener("visibilitychange", scheduleScene);
+  motionPreference.addEventListener("change", () => { if (motionPreference.matches) scenePlaying = false; updateScenePause(); scheduleScene(); });
+  if ("IntersectionObserver" in window) new IntersectionObserver(([entry]) => { heroVisible = entry.isIntersecting; scheduleScene(); }).observe($("home"));
+  updateScenePause(); scheduleScene();
   const stats = el("div", "stats container");
   data.intro.forEach((item) => {
     const stat = el("div", "stat");
@@ -83,13 +142,42 @@
   historyInner.append(heading(data.history, "history-title"));
   const historyGrid = el("div", "history-grid");
   const timeline = el("ol", "timeline", undefined, { "aria-label": data.history.timelineLabel });
-  data.history.timeline.forEach((item) => {
+  const chapterPanel = el("div", "chapter-panel");
+  const chapterCopy = el("div", "chapter-copy", undefined, { "aria-live": "polite", "aria-atomic": "true" });
+  const chapterDate = el("p", "chapter-date");
+  const chapterTitle = el("h3", "");
+  const chapterText = el("p", "chapter-text");
+  chapterCopy.append(el("p", "eyebrow", data.ui.chapterEyebrow), chapterDate, chapterTitle, chapterText);
+  const chapterFigure = el("figure", "chapter-photo");
+  const chapterImage = image(data.history.chapterPhotos[0]);
+  chapterFigure.append(chapterImage, el("figcaption", "", data.ui.chapterPhotoLabel));
+  chapterPanel.append(chapterCopy, chapterFigure);
+  const chapterButtons = [];
+  function selectChapter(index) {
+    const item = data.history.timeline[index];
+    const photo = data.history.chapterPhotos[index] || data.history.chapterPhotos[0];
+    chapterDate.textContent = item.date;
+    chapterTitle.textContent = item.title;
+    chapterText.textContent = item.text;
+    chapterImage.src = photo.image; chapterImage.alt = photo.alt;
+    chapterButtons.forEach((button, i) => button.setAttribute("aria-pressed", String(i === index)));
+    if (!motionPreference.matches && chapterCopy.animate) chapterCopy.animate([{ opacity: 0, transform: "translateY(8px)" }, { opacity: 1, transform: "translateY(0)" }], { duration: 300 });
+  }
+  data.history.timeline.forEach((item, index) => {
     const row = el("li", "timeline-item");
     const copy = el("div", "timeline-copy");
     copy.append(el("h3", "", item.title), el("p", "", item.text));
-    row.append(el("span", "timeline-date", item.date), copy);
+    const chapterButton = el("button", "chapter-button", undefined, { type: "button", "aria-label": `${data.ui.chapterLabel}: ${item.date} · ${item.title}` });
+    chapterButton.append(el("span", "timeline-date", item.date), copy, el("span", "chapter-arrow", data.ui.expandSymbol, { "aria-hidden": "true" }));
+    chapterButton.addEventListener("click", () => {
+      selectChapter(index);
+      if (chapterPanel.getBoundingClientRect().top < 80) chapterPanel.scrollIntoView({ behavior: motionPreference.matches ? "instant" : "smooth", block: "start" });
+    });
+    chapterButtons.push(chapterButton);
+    row.append(chapterButton);
     timeline.append(row);
   });
+  selectChapter(0);
   const map = data.history.map;
   const mapCard = el("aside", "map-card");
   const mapFigure = el("figure");
@@ -103,7 +191,7 @@
   mapLink.append(arrow());
   mapCard.append(el("p", "eyebrow", map.eyebrow), el("h3", "", map.title), mapFigure, places, el("p", "small-note", map.note), mapLink);
   historyGrid.append(timeline, mapCard);
-  historyInner.append(historyGrid);
+  historyInner.append(chapterPanel, historyGrid);
   $("history").append(historyInner);
 
   const highlightsInner = el("div", "container");
@@ -257,6 +345,7 @@
     displayPhoto(item, caption);
     dialog.showModal();
     document.body.classList.add("dialog-open");
+    scheduleScene();
   }
   function stepPhoto(direction) {
     photoIndex = (photoIndex + direction + photoSequence.length) % photoSequence.length;
@@ -273,11 +362,10 @@
   });
   $("photo-close").addEventListener("click", () => dialog.close());
   dialog.addEventListener("click", (event) => { if (event.target === dialog) dialog.close(); });
-  dialog.addEventListener("close", () => document.body.classList.remove("dialog-open"));
+  dialog.addEventListener("close", () => { document.body.classList.remove("dialog-open"); scheduleScene(); });
 
   // Animate once on entry. Content remains visible if motion is reduced or the
   // observer API is unavailable. Focus immediately reveals offscreen controls.
-  const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
   if ("IntersectionObserver" in window && !motionPreference.matches) {
     const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach(({ target, isIntersecting }) => {
@@ -291,7 +379,7 @@
     });
   }
   // A passive, frame-batched listener updates reading progress without layout
-  // changes. No parallax or perpetual animation is needed to feel responsive.
+  // changes. Background slideshow activity is managed separately above.
   const progress = el("div", "reading-progress", undefined, { "aria-hidden": "true" });
   $("header").append(progress);
   let scrollFrame = 0;
@@ -306,4 +394,22 @@
   window.addEventListener("resize", requestScrollUpdate);
   if ("ResizeObserver" in window) new ResizeObserver(requestScrollUpdate).observe($("main"));
   updateScroll();
+
+  // Fine-pointer interaction uses a CSS highlight rather than moving text.
+  // A single animation frame per event burst keeps hovering inexpensive.
+  if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    document.querySelectorAll(".highlight-card,.map-card").forEach((card) => {
+      let hoverFrame = 0;
+      card.addEventListener("pointermove", (event) => {
+        if (motionPreference.matches || hoverFrame) return;
+        const { clientX, clientY } = event;
+        hoverFrame = requestAnimationFrame(() => {
+          const rect = card.getBoundingClientRect();
+          card.style.setProperty("--pointer-x", `${clientX - rect.left}px`);
+          card.style.setProperty("--pointer-y", `${clientY - rect.top}px`);
+          hoverFrame = 0;
+        });
+      });
+    });
+  }
 })();

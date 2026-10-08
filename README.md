@@ -38,6 +38,14 @@ buttons or the left/right arrow keys. Escape closes the viewer. The map and grou
 photo use standalone views. Scroll reveals respect reduced-motion preferences,
 and the thin line below the header indicates reading progress.
 
+The hero cycles through `hero.scenes`. Change its interval with
+`ui.sceneDuration` (milliseconds). Visitors can select or pause scenes; autoplay
+stops during hover, keyboard focus, while the hero is offscreen, and while the
+browser tab is hidden. Reduced-motion preferences disable autoplay by default
+and remove image movement. Timeline buttons update a chapter preview using
+`history.chapterPhotos`, in the same order as `history.timeline`. These images
+are present-day context photographs, not historical reconstructions.
+
 ## Content accuracy
 
 References are linked in the website. Lamanai’s High Temple is not labeled El

@@ -16,7 +16,10 @@ window.siteContent = {
     menuClose: "Close navigation", closePhoto: "Close photograph", closeSymbol: "×", expandSymbol: "↗", viewPhoto: "View photograph",
     enlargeMap: "Explore the site map", backTop: "Back to top", imageUnavailable: "Photograph unavailable",
     previousPhoto: "Previous photograph", nextPhoto: "Next photograph", previousSymbol: "←", nextSymbol: "→",
-    photoCounter: "{current} / {total}", galleryFilters: "Filter photographs", galleryCount: "{count} photographs"
+    photoCounter: "{current} / {total}", galleryFilters: "Filter photographs", galleryCount: "{count} photographs",
+    heroScenes: "Scenes from our journey", sceneLabel: "Show scene {number}: {caption}",
+    pauseSlideshow: "Pause slideshow", playSlideshow: "Play slideshow", pauseSymbol: "Ⅱ", playSymbol: "▶",
+    chapterLabel: "Explore this chapter", chapterEyebrow: "TRAVEL THROUGH TIME", chapterPhotoLabel: "From our field journal", sceneDuration: 6500
   },
   brand: { title: "Lamanai", subtitle: "A student field journal", monogram: "L" },
   navigation: [
@@ -30,6 +33,11 @@ window.siteContent = {
     action: "Explore Journey", actionHref: "#history", location: "Orange Walk District, Belize", image: "images/high-temple.jpg",
     imageAlt: "Lamanai’s High Temple rising above a grassy plaza beneath a blue sky",
     imageCaption: "The High Temple · Lamanai Archaeological Reserve",
+    // Additional hero scenes. Keep photographs and captions together.
+    scenes: [
+      { image: "images/ball-court.jpg", imageAlt: "Lamanai’s ball court beneath the forest canopy", imageCaption: "The Ball Court · sport and ceremony" },
+      { image: "images/temple-plaza.jpg", imageAlt: "Stone temple terraces in the tropical landscape", imageCaption: "Stone terraces · stories in every layer" }
+    ],
     secondaryAction: "Through our lens", secondaryHref: "#gallery",
     fieldNote: { eyebrow: "FROM OUR FIELD JOURNAL", title: "History feels different\nwhen you’re standing in it.", image: "images/class-at-temple.jpg", alt: "Our class looking toward the High Temple", caption: "One class. A thousand new questions." }
   },
@@ -43,6 +51,15 @@ window.siteContent = {
     eyebrow: "01 / HISTORY & MAP", title: "A city that endured.",
     introduction: "Lamanai means “submerged crocodile.” Beside the New River Lagoon in northern Belize, this Maya community has an unusually long history of occupation.",
     timelineLabel: "Lamanai through time",
+    // Context photographs from our visit, not reconstructions of ancient periods.
+    chapterPhotos: [
+      { image: "images/entrance.jpg", alt: "The wooded entrance to Lamanai today" },
+      { image: "images/high-temple.jpg", alt: "The High Temple photographed during our visit" },
+      { image: "images/temple-plaza.jpg", alt: "Temple and plaza architecture at Lamanai today" },
+      { image: "images/ball-court.jpg", alt: "The ball court amid the forest today" },
+      { image: "images/maya-house.jpg", alt: "A modern visitor display of Maya house architecture" },
+      { image: "images/guided-tour.jpg", alt: "Our class learning from a guide at Lamanai" }
+    ],
     timeline: [
       { date: "c. 1500 BCE", title: "Roots beside the lagoon", text: "Maize pollen indicates early settlement. The lagoon connected the community to water and river travel." },
       { date: "c. 100 BCE", title: "Monumental beginnings", text: "The High Temple’s first major phase reshaped the ceremonial center." },
