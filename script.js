@@ -289,7 +289,8 @@
   groupCopy.append(heading(group, "group-title"), el("p", "eyebrow", group.reflectionLabel), el("blockquote", "", group.reflection), el("p", "small-note", group.reflectionNote));
   const date = el("p", "trip-date");
   date.append(el("span", "", `${group.dateHeading} · `), el("time", "", group.dateLabel, { datetime: group.date }));
-  groupCopy.append(date, el("p", "eyebrow students-label", group.studentsLabel), el("p", "students", group.students.join(" · ")), el("span", "sample-label", group.sampleLabel));
+  groupCopy.append(date, el("p", "eyebrow students-label", group.studentsLabel), el("p", "students", group.students.join(" · ")));
+  if (group.sampleLabel) groupCopy.append(el("span", "sample-label", group.sampleLabel));
   groupInner.append(groupFigure, groupCopy);
   $("group").append(groupInner);
 

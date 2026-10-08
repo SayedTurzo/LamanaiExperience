@@ -261,3 +261,6 @@ body { background-image:radial-gradient(#193c3208 .6px,transparent .6px); backgr
 .highlight-card:first-child .highlight-image img { flex:none; height:500px; }
 @media(max-width:900px) { .site-header{min-height:76px;} .highlight-card:first-child .highlight-image img{height:360px;} }
 @media(max-width:600px) { .highlight-card:first-child .highlight-image img{height:300px;} }
+
+/* Preserve the complete team photo card, including its printed names/date. */
+.group-photo img { height:auto; aspect-ratio:632 / 630; object-fit:contain; }

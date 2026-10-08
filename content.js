@@ -3,18 +3,28 @@
  * Keep quotes and commas in place. Add gallery photos by copying one gallery
  * entry. Image paths are relative to index.html, with case-sensitive filenames.
  * Exactly THREE entries belong in highlights.items.
- * Replace the SAMPLE names, date and reflection before submitting the project.
+ * Names/date come from the team photo. Replace the DRAFT reflection before submission.
  * Source images supplied in the chat are preserved as optimized local assets.
  */
 window.siteContent = {
   // Image delivery metadata. Existing image fields below remain easy to edit.
   // Unknown/new paths still work; add an entry here for responsive optimization.
   assets: {
+    "images/mask-temple-front.jpg": {"width": 1200, "height": 1600, "src": "images/mask-temple-front-1200.webp", "srcset": "images/mask-temple-front-320.webp 320w, images/mask-temple-front-480.webp 480w, images/mask-temple-front-800.webp 800w, images/mask-temple-front-960.webp 960w, images/mask-temple-front-1200.webp 1200w"},
+    "images/high-temple-wide.jpg": {"width": 1200, "height": 1600, "src": "images/high-temple-wide-1200.webp", "srcset": "images/high-temple-wide-320.webp 320w, images/high-temple-wide-480.webp 480w, images/high-temple-wide-800.webp 800w, images/high-temple-wide-960.webp 960w, images/high-temple-wide-1200.webp 1200w"},
+    "images/panorama-terraces.jpg": {"width": 1200, "height": 1600, "src": "images/panorama-terraces-1200.webp", "srcset": "images/panorama-terraces-320.webp 320w, images/panorama-terraces-480.webp 480w, images/panorama-terraces-800.webp 800w, images/panorama-terraces-960.webp 960w, images/panorama-terraces-1200.webp 1200w"},
+    "images/ball-court-wide.jpg": {"width": 1200, "height": 900, "src": "images/ball-court-wide-1200.webp", "srcset": "images/ball-court-wide-320.webp 320w, images/ball-court-wide-480.webp 480w, images/ball-court-wide-800.webp 800w, images/ball-court-wide-960.webp 960w, images/ball-court-wide-1200.webp 1200w"},
+    "images/mask-temple-side.jpg": {"width": 900, "height": 1600, "src": "images/mask-temple-side-900.webp", "srcset": "images/mask-temple-side-320.webp 320w, images/mask-temple-side-480.webp 480w, images/mask-temple-side-800.webp 800w, images/mask-temple-side-900.webp 900w"},
+    "images/high-temple-steps.jpg": {"width": 1200, "height": 1600, "src": "images/high-temple-steps-1200.webp", "srcset": "images/high-temple-steps-320.webp 320w, images/high-temple-steps-480.webp 480w, images/high-temple-steps-800.webp 800w, images/high-temple-steps-960.webp 960w, images/high-temple-steps-1200.webp 1200w"},
+    "images/jaguar-temple-front.jpg": {"width": 1200, "height": 1600, "src": "images/jaguar-temple-front-1200.webp", "srcset": "images/jaguar-temple-front-320.webp 320w, images/jaguar-temple-front-480.webp 480w, images/jaguar-temple-front-800.webp 800w, images/jaguar-temple-front-960.webp 960w, images/jaguar-temple-front-1200.webp 1200w"},
+    "images/house-detail.jpg": {"width": 1200, "height": 1600, "src": "images/house-detail-1200.webp", "srcset": "images/house-detail-320.webp 320w, images/house-detail-480.webp 480w, images/house-detail-800.webp 800w, images/house-detail-960.webp 960w, images/house-detail-1200.webp 1200w"},
+    "images/plaza-from-above.jpg": {"width": 1200, "height": 1600, "src": "images/plaza-from-above-1200.webp", "srcset": "images/plaza-from-above-320.webp 320w, images/plaza-from-above-480.webp 480w, images/plaza-from-above-800.webp 800w, images/plaza-from-above-960.webp 960w, images/plaza-from-above-1200.webp 1200w"},
+    "images/mask-temple-carving.jpg": {"width": 1200, "height": 1600, "src": "images/mask-temple-carving-1200.webp", "srcset": "images/mask-temple-carving-320.webp 320w, images/mask-temple-carving-480.webp 480w, images/mask-temple-carving-800.webp 800w, images/mask-temple-carving-960.webp 960w, images/mask-temple-carving-1200.webp 1200w"},
+    "images/group-photo.jpg": {"width": 632, "height": 630, "src": "images/group-photo-632.webp", "srcset": "images/group-photo-320.webp 320w, images/group-photo-480.webp 480w, images/group-photo-632.webp 632w"},
     "images/high-temple.jpg": { width: 1200, height: 1600, src: "images/high-temple-1200.webp", srcset: "images/high-temple-320.webp 320w, images/high-temple-480.webp 480w, images/high-temple-800.webp 800w, images/high-temple-960.webp 960w, images/high-temple-1200.webp 1200w" },
     "images/ball-court.jpg": { width: 1200, height: 1600, src: "images/ball-court-1200.webp", srcset: "images/ball-court-320.webp 320w, images/ball-court-480.webp 480w, images/ball-court-800.webp 800w, images/ball-court-960.webp 960w, images/ball-court-1200.webp 1200w" },
     "images/temple-plaza.jpg": { width: 1200, height: 1600, src: "images/temple-plaza-1200.webp", srcset: "images/temple-plaza-320.webp 320w, images/temple-plaza-480.webp 480w, images/temple-plaza-800.webp 800w, images/temple-plaza-960.webp 960w, images/temple-plaza-1200.webp 1200w" },
     "images/class-at-temple.jpg": { width: 1200, height: 1600, src: "images/class-at-temple-1200.webp", srcset: "images/class-at-temple-320.webp 320w, images/class-at-temple-480.webp 480w, images/class-at-temple-800.webp 800w, images/class-at-temple-960.webp 960w, images/class-at-temple-1200.webp 1200w" },
-    "images/group-photo.jpg": { width: 1200, height: 1600, src: "images/group-photo-1200.webp", srcset: "images/group-photo-320.webp 320w, images/group-photo-480.webp 480w, images/group-photo-800.webp 800w, images/group-photo-960.webp 960w, images/group-photo-1200.webp 1200w" },
     "images/entrance.jpg": { width: 1200, height: 1600, src: "images/entrance-1200.webp", srcset: "images/entrance-320.webp 320w, images/entrance-480.webp 480w, images/entrance-800.webp 800w, images/entrance-960.webp 960w, images/entrance-1200.webp 1200w" },
     "images/maya-house.jpg": { width: 1200, height: 1600, src: "images/maya-house-1200.webp", srcset: "images/maya-house-320.webp 320w, images/maya-house-480.webp 480w, images/maya-house-800.webp 800w, images/maya-house-960.webp 960w, images/maya-house-1200.webp 1200w" },
     "images/stone-detail.jpg": { width: 1200, height: 1600, src: "images/stone-detail-1200.webp", srcset: "images/stone-detail-320.webp 320w, images/stone-detail-480.webp 480w, images/stone-detail-800.webp 800w, images/stone-detail-960.webp 960w, images/stone-detail-1200.webp 1200w" },
@@ -105,10 +115,10 @@ window.siteContent = {
         caption: "The High Temple’s monumental terraces and central stairway.",
         paragraphs: ["Structure N10-43 rises approximately 33 meters and is the tallest temple at Lamanai. Its stepped form reflects successive building campaigns over many centuries.", "Above the forest canopy, the summit provides a broad perspective on the lagoon landscape and the city’s setting. Seeing its scale from the plaza helped us appreciate the planning and labor behind Maya architecture."],
         sourceIds: ["temple", "history"] },
-      { number: "03", category: "POWER & PUBLIC LIFE", title: "The Royal Plaza & Stelae", image: "images/temple-plaza.jpg",
-        alt: "Stone temple terraces and grassy plaza photographed at Lamanai",
-        caption: "Temple and plaza architecture from our visit; this photograph does not identify the Royal Complex or a stela.",
-        paragraphs: ["Lamanai’s elite complexes combined plazas with residential and administrative buildings. The Ottawa group became a focus of Late Classic public life.", "Stelae are upright stone monuments that can commemorate rulers and ritual events. A carved stela was re-erected before Lamanai’s Mask Temple in the later Postclassic, showing the lasting significance of earlier monuments."],
+      { number: "03", category: "TEMPLES & PUBLIC LIFE", title: "The Jaguar Temple", image: "images/jaguar-temple-front.jpg",
+        alt: "Front view of the Jaguar Temple with stepped terraces and jaguar features near its base",
+        caption: "The Jaguar Temple, photographed from its grassy plaza during our visit.",
+        paragraphs: ["The Jaguar Temple, Structure N10-9, anchors a southern plaza at Lamanai. Its stepped terraces and jaguar features make it one of the site’s distinctive monuments.", "The temple’s plaza and the nearby Ottawa complex became a focus of Late Classic public life. The Jaguar Temple continued to be modified during the Postclassic, reflecting Lamanai’s long history of occupation."],
         sourceIds: ["history"] }
     ]
   },
@@ -123,18 +133,28 @@ window.siteContent = {
       { category: "details", image: "images/stone-detail.jpg", alt: "Close view of a weathered circular carved stone", title: "Details in stone", caption: "A carved stone photographed during the guided tour; its specific function is not confirmed in our notes." },
       { category: "details", image: "images/entrance.jpg", alt: "Thatched shelter over the welcome signs and map at Lamanai", title: "The journey begins", caption: "Maps and welcome signs at the reserve entrance." },
       { category: "class", image: "images/guided-tour.jpg", alt: "Students listening to a guide beside a circular stone under trees", title: "Learning beneath the canopy", caption: "Listening, asking questions, and connecting the tour to our classroom learning.", shape: "wide" },
-      { category: "architecture", image: "images/temple-plaza.jpg", alt: "Low-angle view of a stepped stone temple surrounded by trees", title: "Built to endure", caption: "Stone terraces, green spaces, and the tropical landscape." }
+      { category: "architecture", image: "images/temple-plaza.jpg", alt: "Side view of the Jaguar Temple and its stone terraces", title: "The Jaguar Temple", caption: "A side view of the Jaguar Temple, with its distinctive stone details." },
+      { category: "architecture", image: "images/mask-temple-front.jpg", alt: "Front view of a stepped temple with a central staircase and trees", title: "A staircase through history", caption: "A view of the Mask Temple’s terraces and central steps." },
+      { category: "architecture", image: "images/high-temple-wide.jpg", alt: "The High Temple framed by tall palms and a grassy plaza", title: "The temple and its landscape", caption: "A wider view of the High Temple and the surrounding plaza.", shape: "wide" },
+      { category: "details", image: "images/panorama-terraces.jpg", alt: "View down stone terraces toward a green plaza and palm trees", title: "A new perspective", caption: "Looking across the terraces toward the tropical landscape." },
+      { category: "architecture", image: "images/ball-court-wide.jpg", alt: "Wide view of the opposing stone structures framing the ball court", title: "Inside the Ball Court", caption: "Both sides of the ball court, with the playing space between them.", shape: "wide" },
+      { category: "architecture", image: "images/mask-temple-side.jpg", alt: "Stone platforms and steps at the side of the Mask Temple", title: "Layers in stone", caption: "Another angle on the Mask Temple’s stepped architecture." },
+      { category: "details", image: "images/high-temple-steps.jpg", alt: "Close view of steep stone steps beneath a blue sky", title: "Up close with the stonework", caption: "Steps and stone surfaces photographed during our tour." },
+      { category: "architecture", image: "images/jaguar-temple-front.jpg", alt: "The Jaguar Temple photographed directly across the plaza", title: "The Jaguar Temple, face to face", caption: "The temple’s broad terraces rise above the grassy plaza." },
+      { category: "details", image: "images/house-detail.jpg", alt: "Two gourds hanging beside timber walls and a thatched roof", title: "Details of everyday life", caption: "Gourds, timber, and thatch at the Maya house display." },
+      { category: "class", image: "images/plaza-from-above.jpg", alt: "Students in a grassy plaza seen from an elevated stone terrace", title: "Our class, from above", caption: "An elevated view of classmates exploring the grounds." },
+      { category: "details", image: "images/mask-temple-carving.jpg", alt: "Large carved face beside the Mask Temple’s stone terraces and steps", title: "A face from the past", caption: "The Mask Temple’s sculptural details, photographed beside the steps." }
     ]
   },
   group: {
     eyebrow: "04 / OUR SHARED EXPERIENCE", title: "Together, beyond\nthe classroom.",
-    image: "images/group-photo.jpg", alt: "Our class gathered in the High Temple plaza during the trip",
-    caption: "Our class at Lamanai’s High Temple plaza. Replace with a formal group portrait if one becomes available.",
-    // SAMPLE DATE: change both the machine-readable date and its visible label.
-    date: "2026-03-20", dateLabel: "March 20, 2026", dateHeading: "Trip date", sampleLabel: "Sample date & attributions",
+    image: "images/group-photo.jpg", alt: "Belizean History Trip team photo card showing five students at the High Temple, dated September 12, 2026, with names Kaylee, Lydia, Leah, Amelia and Tayshaun",
+    caption: "Our team at Lamanai: Kaylee, Lydia, Leah, Amelia & Tayshaun. September 12, 2026.",
+    // Change both the machine-readable date and its visible label together.
+    date: "2026-09-12", dateLabel: "September 12, 2026", dateHeading: "Trip date", sampleLabel: "",
     reflectionLabel: "OUR REFLECTION", reflection: "Standing beside the temples made history feel tangible. We left with a deeper appreciation for Maya knowledge, the endurance of Lamanai, and our responsibility to respect Belize’s cultural heritage.",
     reflectionNote: "Draft reflection—replace with your group’s own words.",
-    studentsLabel: "PREPARED BY", students: ["Maya Bennett", "Daniel Castillo", "Sofia Williams", "Ethan Martinez"]
+    studentsLabel: "PREPARED BY", students: ["Kaylee", "Lydia", "Leah", "Amelia", "Tayshaun"]
   },
   sources: {
     eyebrow: "THE RESEARCH BEHIND THE JOURNEY", title: "Notes & references",
