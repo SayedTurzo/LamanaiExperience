@@ -30,6 +30,14 @@ entry point. No backend or environment variables are required.
 - `script.js`: safe DOM rendering, responsive menu, active navigation, lightbox.
 - `images/`: optimized local photographs; no third-party image requests.
 
+## Interactive journal
+
+Gallery filter labels live in `gallery.filters` in `content.js`; match each photo's
+`category` to its filter id. The photo viewer browses the current selection with
+buttons or the left/right arrow keys. Escape closes the viewer. The map and group
+photo use standalone views. Scroll reveals respect reduced-motion preferences,
+and the thin line below the header indicates reading progress.
+
 ## Content accuracy
 
 References are linked in the website. Lamanai’s High Temple is not labeled El

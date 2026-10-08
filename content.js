@@ -14,7 +14,9 @@ window.siteContent = {
   ui: {
     skip: "Skip to content", navigation: "Main navigation", menuOpen: "Open navigation",
     menuClose: "Close navigation", closePhoto: "Close photograph", closeSymbol: "×", expandSymbol: "↗", viewPhoto: "View photograph",
-    enlargeMap: "Explore the site map", backTop: "Back to top", imageUnavailable: "Photograph unavailable"
+    enlargeMap: "Explore the site map", backTop: "Back to top", imageUnavailable: "Photograph unavailable",
+    previousPhoto: "Previous photograph", nextPhoto: "Next photograph", previousSymbol: "←", nextSymbol: "→",
+    photoCounter: "{current} / {total}", galleryFilters: "Filter photographs", galleryCount: "{count} photographs"
   },
   brand: { title: "Lamanai", subtitle: "A student field journal", monogram: "L" },
   navigation: [
@@ -27,7 +29,9 @@ window.siteContent = {
     subtitle: "Our Lamanai experience", body: "Beyond the classroom, beneath the canopy. A journey through the temples, stories, and living heritage of an extraordinary Maya city.",
     action: "Explore Journey", actionHref: "#history", location: "Orange Walk District, Belize", image: "images/high-temple.jpg",
     imageAlt: "Lamanai’s High Temple rising above a grassy plaza beneath a blue sky",
-    imageCaption: "The High Temple · Lamanai Archaeological Reserve"
+    imageCaption: "The High Temple · Lamanai Archaeological Reserve",
+    secondaryAction: "Through our lens", secondaryHref: "#gallery",
+    fieldNote: { eyebrow: "FROM OUR FIELD JOURNAL", title: "History feels different\nwhen you’re standing in it.", image: "images/class-at-temple.jpg", alt: "Our class looking toward the High Temple", caption: "One class. A thousand new questions." }
   },
   intro: [
     { value: "3,000+", label: "years of history" },
@@ -80,13 +84,15 @@ window.siteContent = {
   gallery: {
     eyebrow: "03 / THROUGH OUR LENS", title: "Small moments. Lasting memories.",
     introduction: "A field journal in photographs—our class, the forest, and the details we stopped to notice.",
+    // Match each photo's category to a filter id. "all" displays every photo.
+    filters: [{ id: "all", label: "All moments" }, { id: "architecture", label: "Architecture" }, { id: "details", label: "Details & discoveries" }, { id: "class", label: "Our class" }],
     items: [
-      { image: "images/class-at-temple.jpg", alt: "Students gathered on the grass facing the High Temple", title: "History, in front of us", caption: "Our class pauses at the foot of the High Temple.", shape: "wide" },
-      { image: "images/maya-house.jpg", alt: "A timber and thatch Maya house display beside a visitor sign", title: "A different kind of architecture", caption: "A Maya house display, with timber walls and a thatched roof." },
-      { image: "images/stone-detail.jpg", alt: "Close view of a weathered circular carved stone", title: "Details in stone", caption: "A carved stone photographed during the guided tour; its specific function is not confirmed in our notes." },
-      { image: "images/entrance.jpg", alt: "Thatched shelter over the welcome signs and map at Lamanai", title: "The journey begins", caption: "Maps and welcome signs at the reserve entrance." },
-      { image: "images/guided-tour.jpg", alt: "Students listening to a guide beside a circular stone under trees", title: "Learning beneath the canopy", caption: "Listening, asking questions, and connecting the tour to our classroom learning.", shape: "wide" },
-      { image: "images/temple-plaza.jpg", alt: "Low-angle view of a stepped stone temple surrounded by trees", title: "Built to endure", caption: "Stone terraces, green spaces, and the tropical landscape." }
+      { category: "class", image: "images/class-at-temple.jpg", alt: "Students gathered on the grass facing the High Temple", title: "History, in front of us", caption: "Our class pauses at the foot of the High Temple.", shape: "wide" },
+      { category: "architecture", image: "images/maya-house.jpg", alt: "A timber and thatch Maya house display beside a visitor sign", title: "A different kind of architecture", caption: "A Maya house display, with timber walls and a thatched roof." },
+      { category: "details", image: "images/stone-detail.jpg", alt: "Close view of a weathered circular carved stone", title: "Details in stone", caption: "A carved stone photographed during the guided tour; its specific function is not confirmed in our notes." },
+      { category: "details", image: "images/entrance.jpg", alt: "Thatched shelter over the welcome signs and map at Lamanai", title: "The journey begins", caption: "Maps and welcome signs at the reserve entrance." },
+      { category: "class", image: "images/guided-tour.jpg", alt: "Students listening to a guide beside a circular stone under trees", title: "Learning beneath the canopy", caption: "Listening, asking questions, and connecting the tour to our classroom learning.", shape: "wide" },
+      { category: "architecture", image: "images/temple-plaza.jpg", alt: "Low-angle view of a stepped stone temple surrounded by trees", title: "Built to endure", caption: "Stone terraces, green spaces, and the tropical landscape." }
     ]
   },
   group: {

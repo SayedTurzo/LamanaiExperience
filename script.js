@@ -59,7 +59,15 @@
   heroInner.append(el("p", "eyebrow", data.hero.eyebrow), el("h1", "", data.hero.title, { id: "hero-title" }), el("p", "hero-subtitle", data.hero.subtitle), el("p", "hero-body", data.hero.body));
   const cta = link(data.hero.action, data.hero.actionHref, "button button-gold");
   cta.append(arrow());
-  heroInner.append(cta);
+  const heroActions = el("div", "hero-actions");
+  const secondaryCta = link(data.hero.secondaryAction, data.hero.secondaryHref, "hero-secondary");
+  secondaryCta.append(arrow());
+  heroActions.append(cta, secondaryCta);
+  heroInner.append(heroActions);
+  const fieldNote = data.hero.fieldNote;
+  const noteCard = el("aside", "hero-note");
+  noteCard.append(el("p", "eyebrow", fieldNote.eyebrow), el("h2", "", fieldNote.title), image(fieldNote), el("p", "note-caption", fieldNote.caption));
+  heroInner.append(noteCard);
   const heroBottom = el("div", "hero-bottom container");
   heroBottom.append(el("span", "hero-location", data.hero.location), el("span", "hero-caption", data.hero.imageCaption));
   $("home").append(heroInner, heroBottom);
@@ -122,18 +130,37 @@
 
   const galleryInner = el("div", "container");
   galleryInner.append(heading(data.gallery, "gallery-title"));
+  const galleryToolbar = el("div", "gallery-toolbar");
+  const filterGroup = el("div", "gallery-filters", undefined, { role: "group", "aria-label": data.ui.galleryFilters });
+  const galleryCount = el("p", "gallery-count", undefined, { "aria-live": "polite", "aria-atomic": "true" });
+  galleryToolbar.append(filterGroup, galleryCount);
+  let visiblePhotos = data.gallery.items.slice();
   const photos = el("div", "gallery-grid");
+  const galleryFigures = [];
   data.gallery.items.forEach((item) => {
     const figure = el("figure", `gallery-item ${item.shape === "wide" ? "gallery-wide" : ""}`);
     const button = el("button", "gallery-photo photo-trigger", undefined, { type: "button", "aria-label": `${data.ui.viewPhoto}: ${item.title}` });
     button.append(image(item), el("span", "photo-expand", data.ui.expandSymbol, { "aria-hidden": "true" }));
-    button.addEventListener("click", () => openPhoto(item, item.caption));
+    button.addEventListener("click", () => openPhoto(item, item.caption, visiblePhotos));
     const caption = el("figcaption");
     caption.append(el("h3", "", item.title), el("p", "", item.caption));
     figure.append(button, caption);
     photos.append(figure);
+    galleryFigures.push({ figure, item });
   });
-  galleryInner.append(photos);
+  function filterPhotos(category) {
+    visiblePhotos = data.gallery.items.filter((item) => category === "all" || item.category === category);
+    galleryFigures.forEach(({ figure, item }) => { figure.hidden = !visiblePhotos.includes(item); });
+    filterGroup.querySelectorAll("button").forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.filter === category)));
+    galleryCount.textContent = data.ui.galleryCount.replace("{count}", String(visiblePhotos.length));
+  }
+  data.gallery.filters.forEach((filter) => {
+    const button = el("button", "gallery-filter", filter.label, { type: "button", "data-filter": filter.id });
+    button.addEventListener("click", () => filterPhotos(filter.id));
+    filterGroup.append(button);
+  });
+  filterPhotos("all");
+  galleryInner.append(galleryToolbar, photos);
   $("gallery").append(galleryInner);
 
   const group = data.group;
@@ -207,16 +234,76 @@
 
   // The same accessible lightbox serves the map, gallery, and class photograph.
   const dialog = $("photo-dialog");
+  let photoSequence = [];
+  let photoIndex = 0;
+  const photoControls = el("div", "photo-controls");
+  const previousPhoto = el("button", "photo-step", data.ui.previousSymbol, { type: "button", "aria-label": data.ui.previousPhoto });
+  const nextPhoto = el("button", "photo-step", data.ui.nextSymbol, { type: "button", "aria-label": data.ui.nextPhoto });
+  const photoCounter = el("span", "photo-counter", undefined, { "aria-live": "polite", "aria-atomic": "true" });
+  photoControls.append(previousPhoto, photoCounter, nextPhoto);
+  dialog.append(photoControls);
   $("photo-close").textContent = data.ui.closeSymbol;
   $("photo-close").setAttribute("aria-label", data.ui.closePhoto);
-  function openPhoto(item, caption) {
+  function displayPhoto(item, caption) {
     $("photo-image").src = item.image;
     $("photo-image").alt = item.alt;
     $("photo-caption").textContent = caption;
+    photoCounter.textContent = data.ui.photoCounter.replace("{current}", String(photoIndex + 1)).replace("{total}", String(photoSequence.length));
+  }
+  function openPhoto(item, caption, sequence = [item]) {
+    photoSequence = sequence;
+    photoIndex = Math.max(0, sequence.indexOf(item));
+    photoControls.hidden = sequence.length < 2;
+    displayPhoto(item, caption);
     dialog.showModal();
     document.body.classList.add("dialog-open");
   }
+  function stepPhoto(direction) {
+    photoIndex = (photoIndex + direction + photoSequence.length) % photoSequence.length;
+    const item = photoSequence[photoIndex];
+    displayPhoto(item, item.caption);
+  }
+  previousPhoto.addEventListener("click", () => stepPhoto(-1));
+  nextPhoto.addEventListener("click", () => stepPhoto(1));
+  dialog.addEventListener("keydown", (event) => {
+    if (photoSequence.length < 2) return;
+    if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+      event.preventDefault(); stepPhoto(event.key === "ArrowLeft" ? -1 : 1);
+    }
+  });
   $("photo-close").addEventListener("click", () => dialog.close());
   dialog.addEventListener("click", (event) => { if (event.target === dialog) dialog.close(); });
   dialog.addEventListener("close", () => document.body.classList.remove("dialog-open"));
+
+  // Animate once on entry. Content remains visible if motion is reduced or the
+  // observer API is unavailable. Focus immediately reveals offscreen controls.
+  const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+  if ("IntersectionObserver" in window && !motionPreference.matches) {
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(({ target, isIntersecting }) => {
+        if (isIntersecting) { target.classList.add("is-visible"); revealObserver.unobserve(target); }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll(".section-heading,.timeline-item,.map-card,.highlight-card,.gallery-item,.group-grid,.source-list").forEach((element, index) => {
+      element.classList.add("reveal");
+      element.style.setProperty("--reveal-delay", `${(index % 3) * 65}ms`);
+      revealObserver.observe(element);
+    });
+  }
+  // A passive, frame-batched listener updates reading progress without layout
+  // changes. No parallax or perpetual animation is needed to feel responsive.
+  const progress = el("div", "reading-progress", undefined, { "aria-hidden": "true" });
+  $("header").append(progress);
+  let scrollFrame = 0;
+  function updateScroll() {
+    scrollFrame = 0;
+    const range = document.documentElement.scrollHeight - window.innerHeight;
+    progress.style.transform = `scaleX(${range > 0 ? Math.min(1, Math.max(0, window.scrollY / range)) : 0})`;
+    $("header").classList.toggle("is-scrolled", window.scrollY > 30);
+  }
+  function requestScrollUpdate() { if (!scrollFrame) scrollFrame = window.requestAnimationFrame(updateScroll); }
+  window.addEventListener("scroll", requestScrollUpdate, { passive: true });
+  window.addEventListener("resize", requestScrollUpdate);
+  if ("ResizeObserver" in window) new ResizeObserver(requestScrollUpdate).observe($("main"));
+  updateScroll();
 })();
