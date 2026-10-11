@@ -119,7 +119,7 @@ window.siteContent = {
         alt: "Close view of the circular Maya calendar stone and its carvings at Lamanai",
         caption: "The Maya calendar stone, photographed during our visit to Lamanai.",
         paragraphs: ["The Maya calendar stone at Lamanai has carvings representing the months of the Maya calendar. The Maya used calendars to keep track of time, seasons, and important events. The stone may also have been used as a sundial to help tell the time by observing the sun's shadow."],
-        sourceIds: [] }
+        sourceIds: ["calendar"] }
     ]
   },
   gallery: {
@@ -164,7 +164,8 @@ window.siteContent = {
       { id: "overview", label: "University of North Carolina Wilmington", detail: "Occupation history and the archaeological project", url: "https://people.uncw.edu/simmonss/Lamanai%20overview%20of%20LAP.htm" },
       { id: "nich", label: "National Institute of Culture and History", detail: "Site location, name, and cultural heritage", url: "https://nichbelize.org/ia-sites/lamanai/" },
       { id: "ballgame", label: "The Metropolitan Museum of Art", detail: "The Mesoamerican Ballgame · Caitlin C. Earley, 2017", url: "https://www.metmuseum.org/essays/the-mesoamerican-ballgame" },
-      { id: "temple", label: "Lamanai Tourism Development Project", detail: "High Temple dimensions and conservation", url: "https://people.uncw.edu/simmonss/tourism_development_project_at_l.htm" }
+      { id: "temple", label: "Lamanai Tourism Development Project", detail: "High Temple dimensions and conservation", url: "https://people.uncw.edu/simmonss/tourism_development_project_at_l.htm" },
+      { id: "calendar", label: "Smithsonian · Living Maya Time", detail: "Maya calendar systems, months, and seasonal timekeeping", url: "https://maya.nmai.si.edu/calendar/calendar-system" }
     ]
   },
   footer: { title: "My Lamanai Experience", course: "Belizean History Trip", year: "2026", copyright: "Student project. All rights reserved.", closing: "Made with curiosity. Remembered together." }
