@@ -6,8 +6,8 @@ A dependency-free student field journal, ready for static hosting on Vercel.
 
 Open `content.js`. All visible text, accessibility labels, page metadata, captions,
 image paths, student names, and the trip date are there. Keep quotes and commas in
-place. Change `group.date` (YYYY-MM-DD) and `group.dateLabel` together. Replace the
-draft reflection before submission. Keep exactly three highlights. Names and
+place. Change `group.date` (YYYY-MM-DD) and `group.dateLabel` together. The ending
+reflection is supplied by the team. Keep exactly three highlights. Names and
 September 12, 2026 come from the supplied team photo card; its full composition
 is preserved in the group section.
 
@@ -62,7 +62,9 @@ References are linked in the website. Lamanai’s High Temple is not labeled El
 Castillo (the name commonly associated with Xunantunich). The history explains
 Lamanai’s persistence after regional decline. Ballgame rules are described as
 variable, and universal winner/loser sacrifice claims are avoided. The third
-highlight features the Jaguar Temple, following the student’s photo identification.
+highlight features the Maya Calendar, using the team’s supplied explanation and
+the existing calendar-stone photograph. High Temple text and the ending reflection
+also use the team’s supplied wording.
 The map is the supplied sign
 photograph, with an enlargement and links to archaeological research maps.
 

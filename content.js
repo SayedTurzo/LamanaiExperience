@@ -3,7 +3,7 @@
  * Keep quotes and commas in place. Add gallery photos by copying one gallery
  * entry. Image paths are relative to index.html, with case-sensitive filenames.
  * Exactly THREE entries belong in highlights.items.
- * Names/date come from the team photo. Replace the DRAFT reflection before submission.
+ * Names/date come from the team photo. The reflection is supplied by the team.
  * Source images supplied in the chat are preserved as optimized local assets.
  */
 window.siteContent = {
@@ -113,13 +113,13 @@ window.siteContent = {
       { number: "02", category: "ARCHITECTURE & PERSPECTIVE", title: "The High Temple", image: "images/high-temple.jpg",
         alt: "Front view of the High Temple and its stepped stone terraces",
         caption: "The High Temple’s monumental terraces and central stairway.",
-        paragraphs: ["Structure N10-43 rises approximately 33 meters and is the tallest temple at Lamanai. Its stepped form reflects successive building campaigns over many centuries.", "Above the forest canopy, the summit provides a broad perspective on the lagoon landscape and the city’s setting. Seeing its scale from the plaza helped us appreciate the planning and labor behind Maya architecture."],
+        paragraphs: ["Rising 33 meters (108 feet) tall, the High Temple is the tallest structure at Lamanai and one of the largest Pre-Classic Maya structures in Belize. It was an important religious site where the Maya performed ceremonies and rituals. It is believed that bloodletting rituals may have taken place at the top of the temple as part of their religious practices."],
         sourceIds: ["temple", "history"] },
-      { number: "03", category: "TEMPLES & PUBLIC LIFE", title: "The Jaguar Temple", image: "images/jaguar-temple-front.jpg",
-        alt: "Front view of the Jaguar Temple with stepped terraces and jaguar features near its base",
-        caption: "The Jaguar Temple, photographed from its grassy plaza during our visit.",
-        paragraphs: ["The Jaguar Temple, Structure N10-9, anchors a southern plaza at Lamanai. Its stepped terraces and jaguar features make it one of the site’s distinctive monuments.", "The temple’s plaza and the nearby Ottawa complex became a focus of Late Classic public life. The Jaguar Temple continued to be modified during the Postclassic, reflecting Lamanai’s long history of occupation."],
-        sourceIds: ["history"] }
+      { number: "03", category: "TIME & SEASONS", title: "The Maya Calendar", image: "images/stone-detail.jpg",
+        alt: "Close view of the circular Maya calendar stone and its carvings at Lamanai",
+        caption: "The Maya calendar stone, photographed during our visit to Lamanai.",
+        paragraphs: ["The Maya calendar stone at Lamanai has carvings representing the months of the Maya calendar. The Maya used calendars to keep track of time, seasons, and important events. The stone may also have been used as a sundial to help tell the time by observing the sun's shadow."],
+        sourceIds: [] }
     ]
   },
   gallery: {
@@ -130,7 +130,7 @@ window.siteContent = {
     items: [
       { category: "class", image: "images/class-at-temple.jpg", alt: "Students gathered on the grass facing the High Temple", title: "History, in front of us", caption: "Our class pauses at the foot of the High Temple.", shape: "wide" },
       { category: "architecture", image: "images/maya-house.jpg", alt: "A timber and thatch Maya house display beside a visitor sign", title: "A different kind of architecture", caption: "A Maya house display, with timber walls and a thatched roof." },
-      { category: "details", image: "images/stone-detail.jpg", alt: "Close view of a weathered circular carved stone", title: "Details in stone", caption: "A carved stone photographed during the guided tour; its specific function is not confirmed in our notes." },
+      { category: "details", image: "images/stone-detail.jpg", alt: "Close view of the Maya calendar stone and its carvings", title: "The Maya Calendar", caption: "The calendar stone we saw during our guided tour of Lamanai." },
       { category: "details", image: "images/entrance.jpg", alt: "Thatched shelter over the welcome signs and map at Lamanai", title: "The journey begins", caption: "Maps and welcome signs at the reserve entrance." },
       { category: "class", image: "images/guided-tour.jpg", alt: "Students listening to a guide beside a circular stone under trees", title: "Learning beneath the canopy", caption: "Listening, asking questions, and connecting the tour to our classroom learning.", shape: "wide" },
       { category: "architecture", image: "images/temple-plaza.jpg", alt: "Side view of the Jaguar Temple and its stone terraces", title: "The Jaguar Temple", caption: "A side view of the Jaguar Temple, with its distinctive stone details." },
@@ -152,8 +152,8 @@ window.siteContent = {
     caption: "Our team at Lamanai: Kaylee, Lydia, Leah, Amelia & Tayshaun. September 12, 2026.",
     // Change both the machine-readable date and its visible label together.
     date: "2026-09-12", dateLabel: "September 12, 2026", dateHeading: "Trip date", sampleLabel: "",
-    reflectionLabel: "OUR REFLECTION", reflection: "Standing beside the temples made history feel tangible. We left with a deeper appreciation for Maya knowledge, the endurance of Lamanai, and our responsibility to respect Belize’s cultural heritage.",
-    reflectionNote: "Draft reflection—replace with your group’s own words.",
+    reflectionLabel: "OUR REFLECTION", reflection: "Our trip to Lamanai was a fun and memorable experience that gave us the chance to learn more about Belize’s rich history and Maya culture outside the classroom. Being able to see the ancient temples up close made everything we learned feel more real and interesting. It was amazing to think about how the Maya lived, the knowledge they had, and the hard work it took to build such impressive structures. We also enjoyed exploring the site together, taking pictures, and making memories as a group. The trip was not only educational but also a great opportunity for us to bond and enjoy something different from our usual school routine. Overall, visiting Lamanai helped us develop a greater appreciation for Belize’s history and reminded us of the importance of protecting and respecting our cultural heritage for future generations.",
+    reflectionNote: "",
     studentsLabel: "PREPARED BY", students: ["Kaylee", "Lydia", "Leah", "Amelia", "Tayshaun"]
   },
   sources: {

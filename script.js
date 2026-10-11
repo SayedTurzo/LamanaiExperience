@@ -286,7 +286,8 @@
   groupButton.addEventListener("click", () => openPhoto(group, group.caption));
   groupFigure.append(groupButton, el("figcaption", "", group.caption));
   const groupCopy = el("div", "group-copy");
-  groupCopy.append(heading(group, "group-title"), el("p", "eyebrow", group.reflectionLabel), el("blockquote", "", group.reflection), el("p", "small-note", group.reflectionNote));
+  groupCopy.append(heading(group, "group-title"), el("p", "eyebrow", group.reflectionLabel), el("blockquote", "", group.reflection));
+  if (group.reflectionNote) groupCopy.append(el("p", "small-note", group.reflectionNote));
   const date = el("p", "trip-date");
   date.append(el("span", "", `${group.dateHeading} · `), el("time", "", group.dateLabel, { datetime: group.date }));
   groupCopy.append(date, el("p", "eyebrow students-label", group.studentsLabel), el("p", "students", group.students.join(" · ")));
